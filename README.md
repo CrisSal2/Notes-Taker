@@ -4,6 +4,8 @@
   ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
   
 ## Description
+
+  - deployed site: https://notes-taker-75m7.onrender.com
   
   - Take notes, save notes, and delete notes!
 
