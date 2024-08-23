@@ -33,7 +33,6 @@ router.get('/', async(req, res) => {
     } catch (err) {
         res.status(500).json({err: 'Could not get notes!'});
     }
-
 });
 
 
@@ -55,7 +54,6 @@ router.post('/', async (req, res) => {
     } catch {
         res.status(500).json({err: 'Could not save note!'});
     }
-
 });
 
 
@@ -72,8 +70,10 @@ router.delete('/:id', async (req, res) => {
 
         await writeToFile(path.join(__dirname, '../db/db.json'), updateNotes);
         res.json({ message: 'Note deleted successfully.' });
-    } 
-})
+    } catch (err) {
+        res.status(500).json({ err: 'Could not delete note!' });
+    }
+});
 
 
 

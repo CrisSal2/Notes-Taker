@@ -20,8 +20,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 /******************************************************** Page Routes *******************************************************/
 
 
+app.use('/api/notes', notesRoute);
+
 app.use('/', homeRoute);
-app.use('/notes', notesRoute);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
