@@ -5,26 +5,25 @@ const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 
 
-
+// Function to write data to db.json
 const writeToFile = (filePath, content) =>
     new Promise((resolve, reject) =>
       fs.writeFile(filePath, JSON.stringify(content, null, 4), (err) =>
         err ? reject(err) : resolve()
       )
-    );
+);
 
 
-const readNotes = (filePath) => { new Promise((resolve, reject) =>
-      fs.readFile(filePath, 'utf8', (err, data) => (
-        err ? reject(err) : resolve(data)
-    )))
-};
-
-
+// Function to read data from db.json
+const readNotes = (filePath) =>
+  new Promise((resolve, reject) =>
+    fs.readFile(filePath, 'utf8', (err, data) => (err ? reject(err) : resolve(data)))
+);
 
 
 
 
+// Reads data from db.json and returns as JSON for notes to render
 router.get('/', async(req, res) => {
 
     try {
@@ -36,12 +35,7 @@ router.get('/', async(req, res) => {
 });
 
 
-
-
-
-
-
-
+// Writes notes to db.json then returns it to client.
 router.post('/', async (req, res) => {
 
     try {
@@ -51,20 +45,20 @@ router.post('/', async (req, res) => {
         const notes = JSON.parse(data);
         
         notes.push(Note);
+        await writeToFile(path.join(__dirname, '../db/db.json'), notes);
+        res.json(Note);
     } catch {
         res.status(500).json({err: 'Could not save note!'});
     }
 });
 
 
-
-
-
+// Deletes note using the notes id.
 router.delete('/:id', async (req, res) => {
 
     try {
         const noteID = req.params.id;
-        const data = await readFromFile(path.join(__dirname, '../db/db.json'));
+        const data = await readNotes(path.join(__dirname, '../db/db.json'));
         const notes = JSON.parse(data);
         const updateNotes = notes.filter((note) => note.id !== noteID);
 
